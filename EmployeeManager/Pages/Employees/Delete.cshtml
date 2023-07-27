@@ -1,0 +1,26 @@
+﻿@page
+@using System.Data.SqlClient
+@{
+    String id = Request.Query["id"];
+    try
+    {
+        string connectionString = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=tempdb;Integrated Security=True";
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string sql = "delete from tbl_Employee where id=@id";
+            using (SqlCommand sqlCommand = new SqlCommand(sql, connection))
+            {
+                sqlCommand.Parameters.AddWithValue("@id", id);
+                sqlCommand.ExecuteNonQuery();
+            }
+        }
+    }
+    catch (Exception)
+    {
+
+        throw;
+    }
+
+    Response.Redirect("/Employees/Index");
+}
